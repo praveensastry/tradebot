@@ -1,0 +1,170 @@
+basePath: /
+definitions:
+  api.MapResponse:
+    additionalProperties: {}
+    type: object
+host: localhost:9898
+info:
+  contact:
+    name: Source Code
+    url: https://github.com/praveensastry/tradebot
+  description: Tradebot is a tiny web api made with Go that takes array of stock prices
+    and returns the best profit one could have made from 1 purchase and 1 sale using
+    best practices of running microservices in Kubernetes.
+  license:
+    name: MIT License
+    url: https://github.com/praveensastry/tradebot/blob/master/LICENSE
+  title: Tradebot API
+  version: "1.0"
+paths:
+  /delay/{seconds}:
+    get:
+      consumes:
+      - application/json
+      description: waits for the specified period
+      parameters:
+      - description: Delay wait in seconds
+        in: path
+        name: seconds
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.MapResponse'
+      summary: Delay
+      tags:
+      - Chaos Engineering
+  /healthz:
+    get:
+      consumes:
+      - application/json
+      description: used by Kubernetes liveness probe
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Liveness check
+      tags:
+      - Kubernetes
+  /metrics:
+    get:
+      description: returns HTTP requests duration and Go runtime metrics
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Prometheus metrics
+      tags:
+      - Kubernetes
+  /panic:
+    get:
+      description: crashes the process with exit code 255
+      summary: Panic
+      tags:
+      - Chaos Engineering
+  /readyz:
+    get:
+      consumes:
+      - application/json
+      description: used by Kubernetes readiness probe
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Readiness check
+      tags:
+      - Kubernetes
+  /readyz/disable:
+    post:
+      consumes:
+      - application/json
+      description: signals the Kubernetes LB to stop sending requests to this instance
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: OK
+          schema:
+            type: string
+      summary: Disable ready state
+      tags:
+      - Kubernetes
+  /readyz/enable:
+    post:
+      consumes:
+      - application/json
+      description: signals the Kubernetes LB that this instance is ready to receive
+        traffic
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: OK
+          schema:
+            type: string
+      summary: Enable ready state
+      tags:
+      - Kubernetes
+  /trade/profit:
+    post:
+      description: Calculates the Max profit from given prices for a share
+      parameters:
+      - description: Array on prices
+        in: body
+        name: prices
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.MapResponse'
+      summary: Trade
+      tags:
+      - HTTP API
+  /version:
+    get:
+      description: returns tradebot version and git commit hash
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.MapResponse'
+      summary: Version
+      tags:
+      - HTTP API
+  /ws/echo:
+    post:
+      consumes:
+      - application/json
+      description: echos content via websockets
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/api.MapResponse'
+      summary: Echo over websockets
+      tags:
+      - HTTP API
+schemes:
+- http
+- https
+swagger: "2.0"

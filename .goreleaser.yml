@@ -1,0 +1,16 @@
+builds:
+  - main: ./cmd/cli
+    binary: cli
+    ldflags: -s -w -X github.com/praveensastry/tradebot/pkg/version.REVISION={{.Commit}}
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+archives:
+  - name_template: "{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - none*
