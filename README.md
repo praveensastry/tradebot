@@ -4,6 +4,8 @@ Tradebot is a tiny web api made with Go that takes array of stock prices and ret
 
 ## Features
 
+- Separation of concerns with middlewares, transport layers and handlers
+- Multiple transport support ( json/http + ws/http + grpc)
 - Health checks (readiness and liveness)
 - Graceful shutdown on interrupt signals
 - File watcher for secrets and configmaps
@@ -21,6 +23,9 @@ Tradebot is a tiny web api made with Go that takes array of stock prices and ret
 - Swagger docs
 - Web Socket implementation (Since this is a trading API, I thought web socket implementation should be made available. So added a sample implmentation)
 
+### API Documentation
+
+![API Swagger Docs](https://raw.githubusercontent.com/praveensastry/tradebot/master/assets/swagger_screenshot.png)
 Web API:
 
 - `GET /trade/profit` calculates max profit for given prices
@@ -70,6 +75,9 @@ curl -X POST \
 }'
 ```
 
+P.S. While testing you might have approve access if you see the below dialog
+![Permission Dialog](https://raw.githubusercontent.com/praveensastry/tradebot/master/assets/permission.png)
+
 ### Install on Kubernetes
 
 Helm:
@@ -96,3 +104,9 @@ Kustomize:
 ```bash
 kubectl apply -k github.com/praveensastry/tradebot//kustomize
 ```
+
+### Extensions / Improvements
+
+- As of now, the API only calculates profit for 1 transcation (1 buy and 1 sell). Ideally the API should accept the no of transactions as request parameter and calculate profit accordingly.
+- Improve API folder structure by moving handlers, middlewares and transport layers to separate packages / folders
+- Use a framework like go-kit to get most API features OOB
