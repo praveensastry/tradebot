@@ -31,7 +31,6 @@ WORKDIR /home/app
 
 COPY --from=builder /tradebot/bin/tradebot .
 COPY --from=builder /tradebot/bin/cli /usr/local/bin/cli
-COPY ./ui ./ui
 RUN chown -R app:app ./
 
 USER app

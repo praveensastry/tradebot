@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ template "tradebot.fullname" . }}-jwt-test-{{ randAlphaNum 5 | lower }}
+  labels:
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app: {{ template "tradebot.name" . }}
+  annotations:
+    "helm.sh/hook": test-success
+    sidecar.istio.io/inject: "false"
+    linkerd.io/inject: disabled
+    appmesh.k8s.aws/sidecarInjectorWebhook: disabled
+spec:
+  containers:
+    - name: tools
+      image: giantswarm/tiny-tools
+      command:
+        - sh
+        - -c
+        - |
+          TOKEN=$(curl -sd 'test' ${tradebot_SVC}/token | jq -r .token) &&
+          curl -sH "Authorization: Bearer ${TOKEN}" ${tradebot_SVC}/token/validate | grep test
+      env:
+      - name: tradebot_SVC
+        value: {{ template "tradebot.fullname" . }}.{{ .Release.Namespace }}:{{ .Values.service.externalPort }}
+  restartPolicy: Never
+

@@ -1,0 +1,12 @@
+apiVersion: v1
+version: 3.1.4
+appVersion: 3.1.4
+name: tradebot
+engine: gotpl
+description: tradebot Helm chart for Kubernetes
+home: https://github.com/praveensastry/tradebot
+maintainers:
+- email: praveensastry@users.noreply.github.com
+  name: praveensastry
+sources:
+- https://github.com/praveensastry/tradebot
