@@ -21,6 +21,8 @@ Tradebot is a tiny web api made with Go that takes array of stock prices and ret
 - Swagger docs
 - Web Socket implementation (Since this is a trading API, I thought web socket implementation should be made available. So added a sample implmentation)
 
+### API Documentation
+![API Swagger Docs](https://raw.githubusercontent.com/praveensastry/tradebot/master/assets/swagger_screenshot.png)
 Web API:
 
 - `GET /trade/profit` calculates max profit for given prices
@@ -69,6 +71,9 @@ curl -X POST \
 "prices": [10, 7, 5, 8, 11, 9]
 }'
 ```
+
+P.S. While testing you might have approve access if you see the below dialog
+![Permission Dialog](https://raw.githubusercontent.com/praveensastry/tradebot/master/assets/permission.png)
 
 ### Install on Kubernetes
 
